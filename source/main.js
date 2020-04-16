@@ -123,6 +123,7 @@ app.on('ready', function () {
     'message': 'Electron reports ready state. Instantiating main process...'
   })
   zettlr = new Zettlr()
+  //zettlr.getWindow().getWindow().webContents.openDevTools(); // uncomment to debug
 })
 
 /**

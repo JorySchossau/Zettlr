@@ -204,6 +204,10 @@
         "mode": "css",
         "selectors": [ "less" ]
       },
+      "text/x-nim": {
+        "mode": "nim",
+        "selectors": [ "nim" ]
+      },
       "text/x-php": {
         "mode": "php",
         "selectors": [ "php" ]
