@@ -516,11 +516,30 @@ class ZettlrRenderer {
       flag = f.flag
       f = f.file
     }
+    // If refreshing same file, then save/restore scroll and cursor positions
+    var currentScrollInfo
+    var currentCursorInfo
+    var loadingSameFileAgain = false
+    if (this.getCurrentFile().hash == f.hash) {
+      loadingSameFileAgain = true
+      currentCursorInfo = this._editor._cm.getCursor()
+      currentScrollInfo = this._editor._cm.getScrollInfo()
+    }
     // We have received a new file. So close the old and open the new
     this._editor.close()
     // Select the file either in the preview list or in the directory tree
     global.store.set('selectedFile', f.hash)
     this._editor.open(f, flag)
+
+    if (loadingSameFileAgain) {
+      // Order is important! User might have left their cursor out of view
+      // So we must set it, then, like them, scroll to their current view,
+      // which might be leaving the cursor behind.
+      // If we do it the other way around, then the view will snap back
+      // to make the cursor visible.
+      this._editor._cm.setCursor(currentCursorInfo)
+      this._editor._cm.scrollTo(currentScrollInfo.left, currentScrollInfo.top)
+    }
   }
 
   /**
